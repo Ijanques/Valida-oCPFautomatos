@@ -3,54 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validação de Documentos</title>
+    <title>Validador de Documentos</title>
+    <!-- Fontes do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0D1438;
-            color: #93B1FF;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0D1438, #1A237E);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            padding: 20px;
         }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #93B1FF;
+        }
+
         form {
-            background-color: #1A237E;
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        input, select, button {
-            margin: 10px;
-            padding: 8px;
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #93B1FF;
+            text-align: left;
+        }
+
+        select, input {
+            padding: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #000000;
+            font-size: 14px;
+            outline: none;
+            transition: background 0.3s ease;
         }
+
+        select:focus, input:focus {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         button {
-            background-color: #93B1FF;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #93B1FF;
             color: #0D1438;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
+
+        button:hover {
+            background: #7A9BFF;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
         .resultado {
             margin-top: 20px;
-            font-size: 1.2em;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            color: #ffffff;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #93B1FF;
         }
     </style>
 </head>
 <body>
-    <form action="/validar-documento" method="post">
-        <label for="tipo_documento">Tipo de Documento:</label>
-        <select id="tipo_documento" name="tipo_documento">
-            <option value="cpf" th:selected="${tipoDocumento == 'cpf'}">CPF</option>
-            <option value="rg" th:selected="${tipoDocumento == 'rg'}">RG</option>
-        </select>
-        <br>
-        <label for="documento">Número:</label>
-        <input type="text" id="documento" name="documento" th:value="${documento}" required>
-        <br>
-        <button type="submit">Validar</button>
-    </form>
+    <div class="container">
+        <i class="fas fa-id-card icon"></i>
+        <h1>Validador de Documentos</h1>
+        <form action="/validar-documento" method="post">
+            <div class="input-group">
+                <label for="tipo_documento">Tipo de Documento</label>
+                <select id="tipo_documento" name="tipo_documento">
+                    <option value="cpf" th:selected="${tipoDocumento == 'cpf'}">CPF</option>
+                    <option value="rg" th:selected="${tipoDocumento == 'rg'}">RG</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="documento">Número do Documento</label>
+                <input type="text" id="documento" name="documento" th:value="${documento}" placeholder="Digite o número" required>
+            </div>
+            <button type="submit">Validar</button>
+        </form>
 
-    <div th:if="${resultado != null}" class="resultado">
-        <p th:text="${resultado}"></p>
+        <div th:if="${resultado != null}" class="resultado">
+            <p th:text="${resultado}"></p>
+        </div>
     </div>
 </body>
 </html>
